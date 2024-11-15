@@ -11,6 +11,7 @@ Scripts for annotating/predicting G-Quadruplexes (G4s) in a genome sequence, com
 - [Features](#features)
 - [Usage](#usage)
 - [Notes](#notes)
+- [References](#references)
 - [Citation](#citation)
 
   
