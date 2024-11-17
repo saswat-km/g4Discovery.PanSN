@@ -107,7 +107,10 @@ def filterNonOverlappingG4sCmplx(df):
             choosedRow = subset.iloc[0]
         finalData.append(choosedRow.name)
 
-        return df.loc[finalData]
+        df = df.loc[finalData]
+        df.drop_duplicates(inplace=True) #to account for duplicate if last subset result is same
+        
+        return df
 
 ## copied from https://github.com/AnimaTardeb/G4Hunter/blob/master/G4Hunter.py
 
