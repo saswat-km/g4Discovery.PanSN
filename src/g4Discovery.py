@@ -19,8 +19,8 @@ if __name__ == "__main__":
                         help="Minimum pqsfinder score for a G4 to be considered")
     parser.add_argument("-hs", "--g4hunter", type=float, default=1.5, required=False,
                         help="Minimum absolute G4Hunter score for a G4 to be considered")
-    parser.add_argument("-psd", "--docker_min_pqsscore", type=str, required=False, default=30,
-                        help="Minimum pqsfinder score for the docker to run")
+    parser.add_argument("-psd", "--rscript_min_pqsscore", type=str, required=False, default=30,
+                        help="Minimum pqsfinder score for the pqsfinder rscript to run")
     args = parser.parse_args()
 
     input_file_path = args.fasta_file
@@ -32,8 +32,11 @@ if __name__ == "__main__":
     for record in SeqIO.parse(input_file_path, "fasta"):
         pansn = str(record.id)
 
-    print("Running Docker container: kxk302/pqsfinder:1.0.0")
-    run_docker(input_file_path, output_file_path, output_file_name, pqs_min_score=args.docker_min_pqsscore)
+    # print("Running Docker container: kxk302/pqsfinder:1.0.0")
+    # run_docker(input_file_path, output_file_path, output_file_name, pqs_min_score=args.rscript_min_pqsscore)
+
+    print("Running Rscript: run_pqsfinder.R")
+    run_rscript(input_file_path, output_file_path, output_file_name, pqs_min_score=args.rscript_min_pqsscore)
 
     print(f'Using the following parameters: tetrad={args.tetrad}, pqsscore={args.pqsscore}, g4hunter={args.g4hunter}')
 

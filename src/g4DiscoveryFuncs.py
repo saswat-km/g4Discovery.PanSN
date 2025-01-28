@@ -11,12 +11,30 @@ def run_docker(input_file_path, output_file_path, output_file_name, pqs_min_scor
     '''
     try:
         command = [
-            "apptainer", "run", 
+            "docker", "run", 
             "-v", f"{os.path.abspath(input_file_path)}:/input",  # Mount the input file
             "-v", f"{os.path.abspath(output_file_path)}:/output",  # Mount the output file
             container_name,  # Docker container name
             "/input",  # Path to input file inside the container
             f"/output/{output_file_name}",  # Path to output file inside the container
+            f"{pqs_min_score}",
+            "1" #overlapping = True
+        ]
+        result = subprocess.run(command, capture_output=True, text=True, check=True)
+
+    except subprocess.CalledProcessError as e:
+        print(e.stderr)  # Standard error from the container
+
+def run_rscript(input_file_path, output_file_path, output_file_name, pqs_min_score):
+    '''
+    Run the pqsfinder rscript with the specified input and output files. Requires the essential R packages to be installed.
+    R packages required: seqinr, Biostrings, pqsfinder, rtracklayer
+    '''
+    try:
+        command = [
+            "Rscript", "run_pqsfinder.R", 
+            f"{os.path.abspath(input_file_path)}",  # Mount the input file
+            f"{os.path.abspath(output_file_path)}/{output_file_name}",  # Mount the output file
             f"{pqs_min_score}",
             "1" #overlapping = True
         ]
