@@ -45,7 +45,7 @@ Before using this package, ensure the following prerequisites are met:
 ### Command-line Usage
 **Running G4 Discovery**:
 
-Use case: `g4Discovery.py [-h] -fa FASTA_FILE -chr CHROMOSOME -o OUTPUT [-t TETRAD] [-ps PQSSCORE] [-hs G4HUNTER] [-psd DOCKER_MIN_PQSSCORE]`
+Use case: `g4Discovery.py [-h] -fa FASTA_FILE -chr CHROMOSOME -o OUTPUT [-t TETRAD] [-ps PQSSCORE] [-hs G4HUNTER] [-psd RSCRIPT_MIN_PQSSCORE]`
 
 ```
 options:
@@ -60,8 +60,8 @@ options:
 			Minimum pqsfinder score for a G4 to be considered
 -hs G4HUNTER, --g4hunter G4HUNTER
 			Minimum absolute G4Hunter score for a G4 to be considered
--psd RSCRIPT_MIN_PQSSCORE, --rscript_min_pqsscore DOCKER_MIN_PQSSCORE
-			Minimum pqsfinder score for the docker to run
+-psd RSCRIPT_MIN_PQSSCORE, --rscript_min_pqsscore RSCRIPT_MIN_PQSSCORE
+			Minimum pqsfinder score for the rscript to run
 ```
 
 ### Example Use Case
@@ -70,7 +70,6 @@ options:
 ## Notes 
 
   - The input FASTA file should contain only one sequence (e.g. sequence from one chromosome), with a single identifier that starts with the `>` symbol (e.g. `>chr1 human CHM13`).
-  - The docker daemon must be active in the background for the python script to run successfully.
 
 ## References
 1. Hon, J., Martínek, T., Zendulka, J., & Lexa, M. (2017). [pqsfinder: an exhaustive and imperfection-tolerant search tool for potential quadruplex-forming sequences in R](https://doi.org/10.1093/bioinformatics/btx413). _Bioinformatics_, _33_(21), 3373-3379. `doi: 10.1093/bioinformatics/btx413`
