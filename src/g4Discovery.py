@@ -1,4 +1,5 @@
 import argparse
+import gzip
 import os
 import pandas as pd
 
@@ -29,8 +30,9 @@ if __name__ == "__main__":
 
     # To get the record id, if there is no chromsome available 
     # or the identifier uses the PanSN convention
-    for record in SeqIO.parse(input_file_path, "fasta"):
-        pansn = str(record.id)
+    with gzip.open(input_file_path, "rt") as handle:
+        for record in SeqIO.parse(handle, "fasta"):
+            pansn = str(record.id)
 
     # print("Running Docker container: kxk302/pqsfinder:1.0.0")
     # run_docker(input_file_path, output_file_path, output_file_name, pqs_min_score=args.rscript_min_pqsscore)
