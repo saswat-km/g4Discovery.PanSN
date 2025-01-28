@@ -1,5 +1,5 @@
 
-# G4 Discovery Pipeline
+# G4 Discovery Pipeline (non-dockerized)
 
 Scripts for annotating/predicting G-Quadruplexes (G4s) in a genome sequence, combining `pqsfinder` and `G4Hunter`.  
 
@@ -30,19 +30,13 @@ This repository provides a Python script for predicting G-quadruplex (G4) struct
 ## Prerequisites
 
 Before using this package, ensure the following prerequisites are met: 
-1. **Docker Installed**: 
-	- Install Docker if it has not already been installed on your system. 
-	- Refer to the [Docker Installation Guide](https://docs.docker.com/get-docker/) for platform-specific instructions. 
-2. **Required Docker Container**: 
-	- The package requires the container `kxk302/pqsfinder:1.0.0`. 
-	- To pull the container, after installation, run the following command: `docker pull kxk302/pqsfinder:1.0.0 ` 
-	- To verify the installation of the required container, run: `docker images`
 
-*For more information on the dockerized version of pqsfinder, please refer to the repository at: [kxk302/pqsfinder-docker](https://github.com/kxk302/PqsFinder_Docker)*
+**R Installation**: 
+- Install R on your system.
+- Install the required R packages: `seqinr`, `Biostrings`, `pqsfinder`, `rtracklayer`
 
 ## Features
 
--   **Dockerized Execution**: Fully containerized to run independently without requiring R language/packages.
 -   **Flexible Motif Detection**: Supports both standard `((G{3,}[ATCG]{1,12}){3,}G{3,})` and bulged `((G([ATC]{0,1})G([ATC]{0,1})G([ATCG]{1,3})){3,}G([ATC]{0,1})G([ATC]{0,1})G)` G4 motifs.
 -   **Non-overlapping G4 Detection**: Identifies non-overlapping G4 motifs on a given strand and prioritizes the most stable G4s within a region. 
 
@@ -51,15 +45,13 @@ Before using this package, ensure the following prerequisites are met:
 ### Command-line Usage
 **Running G4 Discovery**:
 
-Use case: `g4Discovery.py [-h] -fa FASTA_FILE -chr CHROMOSOME -o OUTPUT [-t TETRAD] [-ps PQSSCORE] [-hs G4HUNTER] [-psd DOCKER_MIN_PQSSCORE]`
+Use case: `g4Discovery.py [-h] -fa FASTA_FILE -chr CHROMOSOME -o OUTPUT [-t TETRAD] [-ps PQSSCORE] [-hs G4HUNTER] [-psd RSCRIPT_MIN_PQSSCORE]`
 
 ```
 options:
 -h, --help  show this help message and exit
 -fa FASTA_FILE, --fasta_file FASTA_FILE
 			Path to the input FASTA file
--chr CHROMOSOME, --chromosome CHROMOSOME
-			Chromosome identifier, either an integer or a single-letter
 -o OUTPUT, --output OUTPUT
 			Path to the output BED file
 -t TETRAD, --tetrad TETRAD
@@ -68,8 +60,8 @@ options:
 			Minimum pqsfinder score for a G4 to be considered
 -hs G4HUNTER, --g4hunter G4HUNTER
 			Minimum absolute G4Hunter score for a G4 to be considered
--psd DOCKER_MIN_PQSSCORE, --docker_min_pqsscore DOCKER_MIN_PQSSCORE
-			Minimum pqsfinder score for the docker to run
+-psd RSCRIPT_MIN_PQSSCORE, --rscript_min_pqsscore RSCRIPT_MIN_PQSSCORE
+			Minimum pqsfinder score for the rscript to run
 ```
 
 ### Example Use Case
@@ -78,7 +70,6 @@ options:
 ## Notes 
 
   - The input FASTA file should contain only one sequence (e.g. sequence from one chromosome), with a single identifier that starts with the `>` symbol (e.g. `>chr1 human CHM13`).
-  - The docker daemon must be active in the background for the python script to run successfully.
 
 ## References
 1. Hon, J., Martínek, T., Zendulka, J., & Lexa, M. (2017). [pqsfinder: an exhaustive and imperfection-tolerant search tool for potential quadruplex-forming sequences in R](https://doi.org/10.1093/bioinformatics/btx413). _Bioinformatics_, _33_(21), 3373-3379. `doi: 10.1093/bioinformatics/btx413`
