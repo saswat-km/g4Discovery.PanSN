@@ -34,9 +34,11 @@ if __name__ == "__main__":
         for record in SeqIO.parse(handle, "fasta"):
             pansn = str(record.id)
 
+    # If you prefer running on local machine, docker is preferable. 
     # print("Running Docker container: kxk302/pqsfinder:1.0.0")
     # run_docker(input_file_path, output_file_path, output_file_name, pqs_min_score=args.rscript_min_pqsscore)
 
+    # However, for running on the cluster, the Rscript is preferable.
     print("Running Rscript: run_pqsfinder.R")
     run_rscript(input_file_path, output_file_path, output_file_name, pqs_min_score=args.rscript_min_pqsscore)
 
