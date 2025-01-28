@@ -11,7 +11,7 @@ def run_docker(input_file_path, output_file_path, output_file_name, pqs_min_scor
     '''
     try:
         command = [
-            "docker", "run", 
+            "apptainer", "run", 
             "-v", f"{os.path.abspath(input_file_path)}:/input",  # Mount the input file
             "-v", f"{os.path.abspath(output_file_path)}:/output",  # Mount the output file
             container_name,  # Docker container name
@@ -29,7 +29,7 @@ def run_docker(input_file_path, output_file_path, output_file_name, pqs_min_scor
 pos_pattern = r'((G{3,}[ATCG]{1,12}){3,}G{3,})|((G([ATC]{0,1})G([ATC]{0,1})G([ATCG]{1,3})){3,}G([ATC]{0,1})G([ATC]{0,1})G)|((G{1,2}[ATC]{1,2}){7,}G{1,2})'
 neg_pattern = r'((C{3,}[ATCG]{1,12}){3,}C{3,})|((C([ATG]{0,1})C([ATG]{0,1})C([ATCG]{1,3})){3,}C([ATG]{0,1})C([ATG]{0,1})C)|((C{1,2}[ATG]{1,2}){7,}C{1,2})'
 
-def filterG4s(fasta_file, chr, min_tetrad, min_score, min_g4hunterscore, pos_pattern=pos_pattern, neg_pattern=neg_pattern):
+def filterG4s(fasta_file, pansn, min_tetrad, min_score, min_g4hunterscore, pos_pattern=pos_pattern, neg_pattern=neg_pattern):
     '''
     Filter G4s from a fasta file based on the following criteria:
     1. Minimum number of tetrads
@@ -58,7 +58,7 @@ def filterG4s(fasta_file, chr, min_tetrad, min_score, min_g4hunterscore, pos_pat
         g4HunterScore = np.round(float(CalScore(BaseScore(sequence)[1],length)[0]),2) #G4 Hunter score calculation
 
         if nt >= min_tetrad and score >= min_score and regex != None and regex.span() == (0, len(sequence)) and abs(g4HunterScore) >= min_g4hunterscore:
-            choose.append([f"chr{chr}", start, end, score, length, strand, g4HunterScore])
+            choose.append([pansn, start, end, score, length, strand, g4HunterScore])
 
     choose = pd.DataFrame(choose, columns=["chr","start", "end", "score", "length", "strand", "g4HunterScore"])
     return choose

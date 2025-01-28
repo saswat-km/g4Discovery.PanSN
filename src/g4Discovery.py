@@ -9,8 +9,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-fa", "--fasta_file", type=str, required=True, 
                         help="Path to the input FASTA file")
-    parser.add_argument("-chr", "--chromosome", type=str, required=True, 
-                        help="Chromosome identifier, either an integer or a single letter")
+    # parser.add_argument("-chr", "--chromosome", type=str, required=True, 
+    #                     help="Chromosome identifier, either an integer or a single letter")
     parser.add_argument("-o", "--output", type=str, required=True, 
                         help="Path to the output BED file")
     parser.add_argument("-t", "--tetrad", type=int, default=3, required=False,
@@ -27,17 +27,22 @@ if __name__ == "__main__":
     output_file_path = os.path.dirname(args.output)
     output_file_name = os.path.basename(args.fasta_file) + ".pqs"
 
+    # To get the record id, if there is no chromsome available 
+    # or the identifier uses the PanSN convention
+    for record in SeqIO.parse(input_file_path, "fasta"):
+        pansn = str(record.id)
+
     print("Running Docker container: kxk302/pqsfinder:1.0.0")
     run_docker(input_file_path, output_file_path, output_file_name, pqs_min_score=args.docker_min_pqsscore)
 
     print(f'Using the following parameters: tetrad={args.tetrad}, pqsscore={args.pqsscore}, g4hunter={args.g4hunter}')
 
     # Validate chr argument to ensure it is either an integer or a single letter
-    if not (args.chromosome.isdigit() or (len(args.chromosome) == 1 and args.chromosome.isalpha())):
-        parser.error("The -chr argument must be either an integer or a single letter.")
+    # if not (args.chromosome.isdigit() or (len(args.chromosome) == 1 and args.chromosome.isalpha())):
+    #     parser.error("The -chr argument must be either an integer or a single letter.")
 
     # Filter G4s
-    filteredG4s = filterG4s(fasta_file=os.path.join(output_file_path, output_file_name), chr=args.chromosome, min_tetrad=args.tetrad, min_score=args.pqsscore, min_g4hunterscore=args.g4hunter)
+    filteredG4s = filterG4s(fasta_file=os.path.join(output_file_path, output_file_name), pansn=pansn, min_tetrad=args.tetrad, min_score=args.pqsscore, min_g4hunterscore=args.g4hunter)
 
     # Filter the DataFrames
     plus_strand_df = filterNonOverlappingG4sCmplx(filteredG4s[filteredG4s["strand"] == "+"])
