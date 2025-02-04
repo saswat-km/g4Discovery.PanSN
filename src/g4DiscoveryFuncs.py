@@ -32,7 +32,7 @@ def run_rscript(input_file_path, output_file_path, output_file_name, pqs_min_sco
     '''
     try:
         command = [
-            "Rscript", "run_pqsfinder.R", 
+            "Rscript", "g4Discovery.PanSN/run_pqsfinder.R", 
             f"{os.path.abspath(input_file_path)}",  # Mount the input file
             f"{os.path.abspath(output_file_path)}/{output_file_name}",  # Mount the output file
             f"{pqs_min_score}",
