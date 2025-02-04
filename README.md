@@ -65,7 +65,7 @@ options:
 ```
 
 ### Example Use Case
-`python3 g4Discovery.py -fa ../test/test.fa -chr 1 -o ../output/out.bed`
+`python3 g4Discovery.py -fa ../test/test.fa -o ../output/out.bed`
 
 ## Notes 
 
