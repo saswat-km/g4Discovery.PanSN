@@ -13,7 +13,7 @@ if __name__ == "__main__":
     # parser.add_argument("-chr", "--chromosome", type=str, required=True, 
     #                     help="Chromosome identifier, either an integer or a single letter")
     parser.add_argument("-o", "--output", type=str, required=True, 
-                        help="Path to the output BED file")
+                        help="Path to the gzipped output BED file")
     parser.add_argument("-t", "--tetrad", type=int, default=3, required=False,
                         help="Minimum number of tetrads for a G4 to be considered")
     parser.add_argument("-ps", "--pqsscore", type=int, default=40, required=False,
