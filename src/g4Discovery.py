@@ -24,6 +24,9 @@ if __name__ == "__main__":
                         help="Minimum pqsfinder score for the pqsfinder rscript to run")
     args = parser.parse_args()
 
+    if not args.output.endswith(".gz"):
+        args.output += ".gz"
+
     input_file_path = args.fasta_file
     output_file_path = os.path.dirname(args.output)
     output_file_name = os.path.basename(args.fasta_file) + ".pqs"
@@ -62,4 +65,4 @@ if __name__ == "__main__":
         final = pd.concat([df for df in [plus_strand_df, minus_strand_df] if not df.empty], axis=0)
         # Sort the final dataframe by start and end positions
         final.sort_values(by=["start","end"], ascending=[True,False], inplace=True)
-        final.to_csv(args.output, sep="\t", header=False, index=False) 
+        final.to_csv(args.output, sep="\t", header=False, index=False, compression="gzip") 
