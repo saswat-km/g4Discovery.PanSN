@@ -53,7 +53,7 @@ options:
 -fa FASTA_FILE, --fasta_file FASTA_FILE
 			Path to the input FASTA file
 -o OUTPUT, --output OUTPUT
-			Path to the output BED file
+			Path to the output gzipped BED file
 -t TETRAD, --tetrad TETRAD
 			Minimum number of tetrads for a G4 to be considered
 -ps PQSSCORE, --pqsscore PQSSCORE
