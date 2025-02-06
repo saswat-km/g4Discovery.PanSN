@@ -66,3 +66,6 @@ if __name__ == "__main__":
         # Sort the final dataframe by start and end positions
         final.sort_values(by=["start","end"], ascending=[True,False], inplace=True)
         final.to_csv(args.output, sep="\t", header=False, index=False, compression="gzip") 
+
+    # Remove the .pqs generated file to save space
+    os.remove(f"{os.path.abspath(output_file_path)}/{output_file_name}")
