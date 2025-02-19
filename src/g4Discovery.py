@@ -64,6 +64,7 @@ if __name__ == "__main__":
         # Write the output to a file if there are G4s found on either strand
         if plus_strand_df.empty and minus_strand_df.empty:
             print("No G4s found on either strand, based on the filtering criteria.")
+            open(args.output, "w").close()
         else:
             final = pd.concat([df for df in [plus_strand_df, minus_strand_df] if not df.empty], axis=0)
             # Sort the final dataframe by start and end positions
