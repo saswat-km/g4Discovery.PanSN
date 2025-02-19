@@ -52,20 +52,23 @@ if __name__ == "__main__":
     #     parser.error("The -chr argument must be either an integer or a single letter.")
 
     # Filter G4s
-    filteredG4s = filterG4s(fasta_file=os.path.join(output_file_path, output_file_name), pansn=pansn, min_tetrad=args.tetrad, min_score=args.pqsscore, min_g4hunterscore=args.g4hunter)
-
-    # Filter the DataFrames
-    plus_strand_df = filterNonOverlappingG4sCmplx(filteredG4s[filteredG4s["strand"] == "+"])
-    minus_strand_df = filterNonOverlappingG4sCmplx(filteredG4s[filteredG4s["strand"] == "-"])
-
-    # Write the output to a file if there are G4s found on either strand
-    if plus_strand_df.empty and minus_strand_df.empty:
-        print("No G4s found on either strand, based on the filtering criteria.")
+    if not os.path.exists(os.path.join(output_file_path, output_file_name)): # If no G4s are found, create an empty bed file for snakemake compatibility
+        open(args.output, "w").close()
     else:
-        final = pd.concat([df for df in [plus_strand_df, minus_strand_df] if not df.empty], axis=0)
-        # Sort the final dataframe by start and end positions
-        final.sort_values(by=["start","end"], ascending=[True,False], inplace=True)
-        final.to_csv(args.output, sep="\t", header=False, index=False, compression="gzip") 
+        filteredG4s = filterG4s(fasta_file=os.path.join(output_file_path, output_file_name), pansn=pansn, min_tetrad=args.tetrad, min_score=args.pqsscore, min_g4hunterscore=args.g4hunter)
 
-    # Remove the .pqs generated file to save space
-    os.remove(f"{os.path.abspath(output_file_path)}/{output_file_name}")
+        # Filter the DataFrames
+        plus_strand_df = filterNonOverlappingG4sCmplx(filteredG4s[filteredG4s["strand"] == "+"])
+        minus_strand_df = filterNonOverlappingG4sCmplx(filteredG4s[filteredG4s["strand"] == "-"])
+
+        # Write the output to a file if there are G4s found on either strand
+        if plus_strand_df.empty and minus_strand_df.empty:
+            print("No G4s found on either strand, based on the filtering criteria.")
+        else:
+            final = pd.concat([df for df in [plus_strand_df, minus_strand_df] if not df.empty], axis=0)
+            # Sort the final dataframe by start and end positions
+            final.sort_values(by=["start","end"], ascending=[True,False], inplace=True)
+            final.to_csv(args.output, sep="\t", header=False, index=False, compression="gzip") 
+
+        # Remove the .pqs generated file to save space
+        os.remove(f"{os.path.abspath(output_file_path)}/{output_file_name}")
