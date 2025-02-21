@@ -52,10 +52,11 @@ if __name__ == "__main__":
     #     parser.error("The -chr argument must be either an integer or a single letter.")
 
     # Filter G4s
-    if not os.path.exists(os.path.join(output_file_path, output_file_name)): # If no G4s are found, create an empty bed file for snakemake compatibility
+    pqs_fasta_file = os.path.join(output_file_path, output_file_name)
+    if not os.path.exists(pqs_fasta_file): # If no G4s are found, create an empty bed file for snakemake compatibility
         open(args.output, "w").close()
     else:
-        filteredG4s = filterG4s(fasta_file=os.path.join(output_file_path, output_file_name), pansn=pansn, min_tetrad=args.tetrad, min_score=args.pqsscore, min_g4hunterscore=args.g4hunter)
+        filteredG4s = filterG4s(fasta_file=pqs_fasta_file, pansn=pansn, min_tetrad=args.tetrad, min_score=args.pqsscore, min_g4hunterscore=args.g4hunter)
 
         # Filter the DataFrames
         plus_strand_df = filterNonOverlappingG4sCmplx(filteredG4s[filteredG4s["strand"] == "+"])
