@@ -41,36 +41,36 @@ if __name__ == "__main__":
     # print("Running Docker container: kxk302/pqsfinder:1.0.0")
     # run_docker(input_file_path, output_file_path, output_file_name, pqs_min_score=args.rscript_min_pqsscore)
 
-    # However, for running on the cluster, the Rscript is preferable.
+    # However, for running on the cluster, the Rscript is preferable. Only executes later lines if Rscript run is successful.
     print("Running Rscript: run_pqsfinder.R")
-    run_rscript(input_file_path, output_file_path, output_file_name, pqs_min_score=args.rscript_min_pqsscore)
-
-    print(f'Using the following parameters: tetrad={args.tetrad}, pqsscore={args.pqsscore}, g4hunter={args.g4hunter}')
-
-    # Validate chr argument to ensure it is either an integer or a single letter
-    # if not (args.chromosome.isdigit() or (len(args.chromosome) == 1 and args.chromosome.isalpha())):
-    #     parser.error("The -chr argument must be either an integer or a single letter.")
-
-    # Filter G4s
-    pqs_fasta_file = os.path.join(output_file_path, output_file_name)
-    if not os.path.exists(pqs_fasta_file): # If no G4s are found, create an empty bed file for snakemake compatibility
-        open(args.output, "w").close()
-    else:
-        filteredG4s = filterG4s(fasta_file=pqs_fasta_file, pansn=pansn, min_tetrad=args.tetrad, min_score=args.pqsscore, min_g4hunterscore=args.g4hunter)
-
-        # Filter the DataFrames
-        plus_strand_df = filterNonOverlappingG4sCmplx(filteredG4s[filteredG4s["strand"] == "+"])
-        minus_strand_df = filterNonOverlappingG4sCmplx(filteredG4s[filteredG4s["strand"] == "-"])
-
-        # Write the output to a file if there are G4s found on either strand
-        if plus_strand_df.empty and minus_strand_df.empty:
-            print("No G4s found on either strand, based on the filtering criteria.")
+    if run_rscript(input_file_path, output_file_path, output_file_name, pqs_min_score=args.rscript_min_pqsscore) == 0:
+        
+        print(f'Using the following parameters: tetrad={args.tetrad}, pqsscore={args.pqsscore}, g4hunter={args.g4hunter}')
+    
+        # Validate chr argument to ensure it is either an integer or a single letter
+        # if not (args.chromosome.isdigit() or (len(args.chromosome) == 1 and args.chromosome.isalpha())):
+        #     parser.error("The -chr argument must be either an integer or a single letter.")
+    
+        # Filter G4s
+        pqs_fasta_file = os.path.join(output_file_path, output_file_name)
+        if not os.path.exists(pqs_fasta_file): # If no G4s are found, create an empty bed file for snakemake compatibility
             open(args.output, "w").close()
         else:
-            final = pd.concat([df for df in [plus_strand_df, minus_strand_df] if not df.empty], axis=0)
-            # Sort the final dataframe by start and end positions
-            final.sort_values(by=["start","end"], ascending=[True,False], inplace=True)
-            final.to_csv(args.output, sep="\t", header=False, index=False, compression="gzip") 
-
-        # Remove the .pqs generated file to save space
-        os.remove(f"{os.path.abspath(output_file_path)}/{output_file_name}")
+            filteredG4s = filterG4s(fasta_file=pqs_fasta_file, pansn=pansn, min_tetrad=args.tetrad, min_score=args.pqsscore, min_g4hunterscore=args.g4hunter)
+    
+            # Filter the DataFrames
+            plus_strand_df = filterNonOverlappingG4sCmplx(filteredG4s[filteredG4s["strand"] == "+"])
+            minus_strand_df = filterNonOverlappingG4sCmplx(filteredG4s[filteredG4s["strand"] == "-"])
+    
+            # Write the output to a file if there are G4s found on either strand
+            if plus_strand_df.empty and minus_strand_df.empty:
+                print("No G4s found on either strand, based on the filtering criteria.")
+                open(args.output, "w").close()
+            else:
+                final = pd.concat([df for df in [plus_strand_df, minus_strand_df] if not df.empty], axis=0)
+                # Sort the final dataframe by start and end positions
+                final.sort_values(by=["start","end"], ascending=[True,False], inplace=True)
+                final.to_csv(args.output, sep="\t", header=False, index=False, compression="gzip") 
+    
+            # Remove the .pqs generated file to save space
+            os.remove(f"{os.path.abspath(output_file_path)}/{output_file_name}")
