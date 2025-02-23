@@ -43,6 +43,7 @@ def run_rscript(input_file_path, output_file_path, output_file_name, pqs_min_sco
 
     except subprocess.CalledProcessError as e:
         print(e.stderr)  # Standard error from the container
+        return 1
 
 # regex expressions derived from Guedin A. et al. (2010), Mukundan V.T. et al. (2013), and Maity A. et al. (2020)
 pos_pattern = r'((G{3,}[ATCG]{1,12}){3,}G{3,})|((G([ATC]{0,1})G([ATC]{0,1})G([ATCG]{1,3})){3,}G([ATC]{0,1})G([ATC]{0,1})G)|((G{1,2}[ATC]{1,2}){7,}G{1,2})'
