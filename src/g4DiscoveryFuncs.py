@@ -39,6 +39,7 @@ def run_rscript(input_file_path, output_file_path, output_file_name, pqs_min_sco
             "1" #overlapping = True
         ]
         result = subprocess.run(command, check=True)
+        return 0
 
     except subprocess.CalledProcessError as e:
         print(e.stderr)  # Standard error from the container
