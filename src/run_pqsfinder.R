@@ -31,7 +31,7 @@ dnaString = DNAString(seq)
 print("Running pqsfinder")
 # Run pqsfinder
 #pqs <- pqsfinder(dnaString, min_score=MinScore, overlapping=(Overlapping == 1)) # Prints the status of the search
-pqs <- suppressMessages(suppressWarnings(pqsfinder(dnaString, min_score=MinScore, overlapping=(Overlapping == 1), echo=FALSE)))
+pqs <- suppressMessages(suppressWarnings(pqsfinder(dnaString, min_score=MinScore, overlapping=(Overlapping == 1))))
 
 # Export all PQS into a GFF3-formatted file
 print("Exporting pqsfinder output")
