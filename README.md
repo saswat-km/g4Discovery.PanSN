@@ -34,6 +34,14 @@ Before using this package, ensure the following prerequisites are met:
 **R Installation**: 
 - Install R on your system.
 - Install the required R packages: `seqinr`, `Biostrings`, `pqsfinder`, `rtracklayer`
+  
+  To install run:
+  ```
+  install.packages("seqinr")
+  if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+  BiocManager::install(c("pqsfinder", "rtracklayer", "Biostrings"))
+  ```
 
 ## Features
 
