@@ -124,7 +124,10 @@ def filterNonOverlappingG4sCmplx(df):
         if not df_workon.empty:
             subset = df_workon.loc[choose] 
             subset = subset.sort_values(by=["score","length"],ascending=[False,True])
-            choosedRow = subset.iloc[0]
+            try:
+                choosedRow = subset.iloc[0]
+            except:
+                pass
         finalData.append(choosedRow.name)
 
         df = df.loc[finalData]
