@@ -31,7 +31,8 @@ This repository provides a Python script for predicting G-quadruplex (G4) struct
 
 Before using this package, ensure the following prerequisites are met: 
 
-**R Installation**: 
+**Installation**: 
+- Requires Python packages: Pandas and NumPy. 
 - Install R on your system.
 - Install the required R packages: `seqinr`, `Biostrings`, `pqsfinder`, `rtracklayer`
   
